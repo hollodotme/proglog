@@ -188,9 +188,9 @@ type originReader struct {
 	off int64
 }
 
-func (or *originReader) Read(p []byte) (n int, err error) {
-	n, err = or.ReadAt(p, or.off)
-	or.off += int64(n)
+func (o *originReader) Read(p []byte) (int, error) {
+	n, err := o.ReadAt(p, o.off)
+	o.off += int64(n)
 	return n, err
 }
 

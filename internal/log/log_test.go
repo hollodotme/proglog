@@ -84,11 +84,11 @@ func testReader(t *testing.T, log *Log) {
 	require.Equal(t, uint64(0), off)
 
 	reader := log.Reader()
-	b, err := io.ReadAll(reader)
+	bt, err := io.ReadAll(reader)
 	require.NoError(t, err)
 
 	read := &api.Record{}
-	err = proto.Unmarshal(b[lenWidth:], read)
+	err = proto.Unmarshal(bt[lenWidth:], read)
 	require.NoError(t, err)
 	require.Equal(t, appnd.Value, read.Value)
 }
