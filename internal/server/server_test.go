@@ -23,9 +23,9 @@ func TestServer(t *testing.T) {
 		"consume past log boundary fails":                    testConsumePastBoundary,
 	} {
 		t.Run(scenario, func(t *testing.T) {
-			client, config, teardown := setupTest(t, nil)
+			client, cfg, teardown := setupTest(t, nil)
 			defer teardown()
-			fn(t, client, config)
+			fn(t, client, cfg)
 		})
 	}
 }
@@ -43,7 +43,7 @@ func setupTest(t *testing.T, fn func(config *Config)) (client api.LogClient, cfg
 	require.NoError(t, err)
 
 	clientCreds := credentials.NewTLS(clientTLSConfig)
-	cc, err := grpc.Dial(l.Addr().String(), grpc.WithTransportCredentials(clientCreds))
+	cc, err := grpc.NewClient(l.Addr().String(), grpc.WithTransportCredentials(clientCreds))
 	require.NoError(t, err)
 
 	client = api.NewLogClient(cc)
