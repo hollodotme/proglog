@@ -54,3 +54,7 @@ $(CONFIG_PATH)/policy.csv:
 test: $(CONFIG_PATH)/model.conf $(CONFIG_PATH)/policy.csv
 	go test -race -v ./...
 .PHONY: test
+
+test-server: $(CONFIG_PATH)/model.conf $(CONFIG_PATH)/policy.csv
+	go test -race -v  ./internal/server/... -debug=true
+.PHONY: test-server
