@@ -426,3 +426,20 @@ func (l *DistributedLog) Close() error {
 	}
 	return l.log.Close()
 }
+
+func (l *DistributedLog) GetServers() ([]*api.Server, error) {
+	future := l.raft.GetConfiguration()
+	if err := future.Error(); err != nil {
+		return nil, err
+	}
+	var servers []*api.Server
+	for _, server := range future.Configuration().Servers {
+		lAddr, _ := l.raft.LeaderWithID()
+		servers = append(servers, &api.Server{
+			Id:       string(server.ID),
+			RpcAddr:  string(server.Address),
+			IsLeader: lAddr == server.Address,
+		})
+	}
+	return servers, nil
+}
